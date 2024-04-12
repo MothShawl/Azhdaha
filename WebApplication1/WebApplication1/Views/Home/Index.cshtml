@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@model WebApplication1.Models.SearchResultLine
+
+<input type="text" id="searchName" />
+<br />
+<table id="SearchResultTable" border="1">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">CourseName</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.SearchData)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Surname</td>
+                <td>@item.CourseName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script >
+    var inputText = document.getElementById("searchName");
+    function changeOption() {
+        var txt = inputText.value;
+        $.ajax({
+            url: '/Home/Index?pattern=' + txt,
+            type: 'GET',
+            success: function (data) {
+                $("#SearchResultTable tbody tr").remove();
+                for (let i = 0; i < data.length; i++) {
+                    $('#SearchResultTable > tbody:last-child').append('<tr><th scope="row">'
+                        + data[i].Name + '</td><td>'
+                        + data[i].Surname + '</td><td>'
+                        + data[i].CourseName + '</td><td>');
+                }
+            }
+        });
+    }
+    inputText.addEventListener("input", changeOption);
+</script>
+<a href="/Home/GetWord">Get Word</a>

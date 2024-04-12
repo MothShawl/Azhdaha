@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestTableJoin11Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="StudentsCourses" Relationship="Self.FK__StudentsC__Cours__4E88ABD4" FromRole="Courses" ToRole="StudentsCourses" />
+  </EntityType>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Surname" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Patronymic" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="StudentsCourses" Relationship="Self.FK__StudentsC__Stud___4D94879B" FromRole="Students" ToRole="StudentsCourses" />
+  </EntityType>
+  <EntityType Name="StudentsCourses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Stud_Id" Type="Int32" />
+    <Property Name="Course_Id" Type="Int32" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__StudentsC__Cours__4E88ABD4" FromRole="StudentsCourses" ToRole="Courses" />
+    <NavigationProperty Name="Students" Relationship="Self.FK__StudentsC__Stud___4D94879B" FromRole="StudentsCourses" ToRole="Students" />
+  </EntityType>
+  <Association Name="FK__StudentsC__Cours__4E88ABD4">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1" />
+    <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentsCourses">
+        <PropertyRef Name="Course_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StudentsC__Stud___4D94879B">
+    <End Role="Students" Type="Self.Students" Multiplicity="0..1" />
+    <End Role="StudentsCourses" Type="Self.StudentsCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StudentsCourses">
+        <PropertyRef Name="Stud_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestTableJoin11Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Courses" EntityType="Self.Courses" />
+    <EntitySet Name="Students" EntityType="Self.Students" />
+    <EntitySet Name="StudentsCourses" EntityType="Self.StudentsCourses" />
+    <AssociationSet Name="FK__StudentsC__Cours__4E88ABD4" Association="Self.FK__StudentsC__Cours__4E88ABD4">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StudentsC__Stud___4D94879B" Association="Self.FK__StudentsC__Stud___4D94879B">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="StudentsCourses" EntitySet="StudentsCourses" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
